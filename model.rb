@@ -15,11 +15,11 @@ itemCountB = 0 # アイテムB測定二回目
 JudgA = 0 # 初期移動方向判定一回目
 JudgB = 0 # 初期移動方向判定二回目
 #ループ内変数
-tar = nil # 0=put,1=walk,2=look
-put = nil # 0=U,1=L,2=D,3=R
-look = nil # 0=U,1=L,2=D,3=R
-go = nil # 0=U,1=L,2=D,3=R
-tarn = 0 # ターンカウント
+tar = nil #　Walk,Put,Lookの分岐　0=put,1=walk,2=look
+put = nil # Put 0=Up,1=Left,2=Down,3=Right
+look = nil # Look 0=Up,1=Left,2=Down,3=Right
+go = nil # 移動先 0=Up,1=Left,2=Down,3=Right
+tarn = 4 # ターンカウント(初期移動の分の4)
 
 # 初期位置把握
 values = target.getReady
@@ -164,340 +164,337 @@ elsif IntPosi == 3
 end
 
 
-loop do # loop-start
+loop do # ここからループ
 
-#-----Non-rewritable-----
+#-----ここから-----
   values = target.getReady
   if values[0] == 0
     break
   end
-#-----Non-rewritable-end-----
+#-----ここまで書き換えない-----
 
-#var-init
-  tar = nil
-
-# item-sle
+# アイテムが斜めにあった時
   if values[1] == 3
     rand = random.rand(0..1)
     if rand == 0
-      go = 0 # U
-      tar = 1
+      go = 0 # 上に歩く
+      tar = 1 # walkする
       if values[2] == 2
-        go = 1 # L
-        tar = 1
+        go = 1 # 左に歩く
+        tar = 1 # walkする
       end
     else
-      go = 1 # L
-      tar = 1
+      go = 1 # 左に歩く
+      tar = 1 #walkする
       if values[4] == 2
-        go = 0 # U
-        tar = 1
+        go = 0 # 上に歩く
+        tar = 1 # walkする
       end
     end
     elsif values[3] == 3
       rand = random.rand(0..1)
       if rand == 0
-        go = 0 # U
-        tar = 1
+        go = 0 # 上に歩く
+        tar = 1 # walkする
         if values[2] == 2
-          go = 3 # R
-          tar = 1
+          go = 3 # 右に歩く
+          tar = 1 # walkする
         end
       else
-        go = 3 # R
-        tar = 1
+        go = 3 # 右に歩く
+        tar = 1 #walkする
         if values[6] == 2
-          go = 0 # U
-          tar = 1
+          go = 0 # 上に歩く
+          tar = 1　# walkする
         end
       end
     elsif values[7] == 3
       rand = random.rand(0..1)
       if rand == 0
-        go = 1 # L
-        tar = 1
+        go = 1 # 左に歩く
+        tar = 1 # walkする
         if values[4] == 2
-          go = 2 # D
-          tar = 1
+          go = 2 # 下に歩く
+          tar = 1 # walkする
         end
       else
-        go = 2 # D
-        tar = 1
+        go = 2 # 下に歩く
+        tar = 1 # walkする
         if values[8] == 2
-          go = 1 # L
-          tar = 1
+          go = 1 # 左に歩く
+          tar = 1 # walkする
         end
       end
     elsif values[9] == 3
       rand = random.rand(0..1)
       if rand == 0
-        go = 2 # D
-        tar = 1
+        go = 2 # 下に歩く
+        tar = 1 # walkする
         if values[8] == 2
-          go = 3 # R
-          tar = 1
+          go = 3 # 右に歩く
+          tar = 1 # walkする
         end
       else
-        go = 3 # R
-        tar = 1
+        go = 3 # 右に歩く
+        tar = 1  # walkする
         if values[6] == 2
-          go = 2 # D
-          tar = 1
+          go = 2 # 下に歩く
+          tar = 1  # walkする
         end
       end
     end
 
-# char-sle
+# 斜めに敵がいたとき
   if values[1] == 1
     rand = random.rand(0..1)
     if rand == 0
-      go = 3 # R
-      tar = 1
+      go = 3 # 右に歩く
+      tar = 1  # walkする
       if values[6] == 2
-        go = 2 # D
-        tar = 1
+        go = 2 # 下に歩く
+        tar = 1  # walkする
         if values[8] == 2
-          look = 0 # U
-          tar = 2
+          look = 0 # 上を見る
+          tar = 2 # lookする
         end
       end
     else
-      go = 2 # D
-      tar = 1
+      go = 2 # 下に歩く
+      tar = 1  # walkする
       if values[8] == 2
-        go = 3 # R
-        tar = 1
+        go = 3 # 右に歩く
+        tar = 1  # walkする
         if values[6] == 2
-          look = 0 # U
-          tar = 2
+          look = 0 # 上を見る
+          tar = 2  # lookする
         end
       end
     end
     elsif values[3] == 1
       rand = random.rand(0..1)
       if rand == 0
-        go = 1 # L
-        tar = 1
+        go = 1 # 左に歩く
+        tar = 1  # walkする
         if values[4] == 2
-          go = 2 # D
-          tar = 1
+          go = 2 # 下に歩く
+          tar = 1 # walkする
           if values[8] == 2
-            look = 0 # U
-            tar = 2
+            look = 0 # 上を見る
+            tar = 2 # walkする
           end
         end
       else
-        go = 2 # D
-        tar = 1
+        go = 2 # 下に歩く
+        tar = 1 # walkする
         if values[8] == 2
-          go = 1 # L
-          tar = 1
+          go = 1 # 左に歩く
+          tar = 1  # walkする
           if values[4] == 2
-            look = 0 # U
-            tar = 2
+            look = 0 # 上を見る
+            tar = 2  # lookする
           end
         end
       end
     elsif values[7] == 1
       rand = random.rand(0..1)
       if rand == 0
-        go = 3 # R
-        tar = 1
+        go = 3 # 右に歩く
+        tar = 1  # walkする
         if values[6] == 2
-          go = 0 # U
-          tar = 1
+          go = 0 # 上に歩く
+          tar = 1 # walkする
           if values[2] == 2
-            look = 2 # D
-            tar = 2
+            look = 2 # 下を見る
+            tar = 2  # lookする
           end
         end
       else
-        go = 0 # U
-        tar = 1
+        go = 0 # 上に歩く
+        tar = 1  # walkする
         if values[2] == 2
-          go = 3 # R
-          tar = 1
+          go = 3 # 右に歩く
+          tar = 1  # walkする
           if values[6] == 2
-            look = 2 # D
-            tar = 2
+            look = 2 # 下を見る
+            tar = 2  # lookする
           end
         end
       end
     elsif values[9] == 1
       rand = random.rand(0..1)
       if rand == 0
-        go = 1 # L
-        tar = 1
+        go = 1 # 左に歩く
+        tar = 1  # walkする
         if values[4] == 2
-          go = 0 # U
-          tar = 1
+          go = 0 # 上に歩く
+          tar = 1  # walkする
           if values[2] == 2
-            look = 2 # D
-            tar = 2
+            look = 2 # 下を見る
+            tar = 2  # lookする
           end
         end
       else
-        go = 0 # U
-        tar = 1
+        go = 0 # 上に歩く
+        tar = 1 # walkする
         if values[2] == 2
-          go = 1 # L
-          tar = 1
+          go = 1 # 左に歩く
+          tar = 1  # walkする
           if values[4] == 2
-            look = 2 # D
-            tar = 2
+            look = 2 # 下を見る
+            tar = 2  # lookする
           end
         end
       end
   end
-# block
-  if go == 0 # Up
+# 壁除け
+  if go == 0 # 上を向いているとき
     if values[2] == 2
       rand = random.rand(0..1)
       if rand == 0
-        go = 1 # L
-        tar = 1
+        go = 1 # 左に歩く
+        tar = 1  # walkする
         if values[4] == 2
-          go = 3 # R
-          tar = 1
+          go = 3 # 右に歩く
+          tar = 1  # walkする
           if values[6] == 2
-            go = 2 # D
-            tar = 1
+            go = 2 # 下に歩く
+            tar = 1  # walkする
           end
         end
       else
-        go = 3 # R
-        tar = 1
+        go = 3 # 右に歩く
+        tar = 1 # walkする
         if values[6] == 2
-          go = 1 # L
-          tar = 1
+          go = 1 # 左に歩く
+          tar = 1 # walkする
           if values[4] == 2
-            go = 2 # D
-            tar = 1
+            go = 2 # 下に歩く
+            tar = 1  # walkする
           end
         end
       end
     end
-    tar = 1
+    tar = 1  # walkする
   end
 
-  if go == 1 # Left
+  if go == 1 # 左を向いていた時
     if values[4] == 2
       rand = random.rand(0..1)
       if rand == 0
-        go = 0 # U
-        tar = 1
+        go = 0 # 上に歩く
+        tar = 1 # walkする
         if values[2] == 2
-          go = 2 # D
-          tar = 1
+          go = 2 # 下に歩く
+          tar = 1 # walkする
           if values[8] == 2
-            go = 3 # R
-            tar = 1
+            go = 3 # 右に歩く
+            tar = 1 # walkする
           end
         end
       else
-        go = 2 # D
-        tar = 1
+        go = 2 # 下に歩く
+        tar = 1 # walkする
         if values[8] == 2
-          go = 0 # U
-          tar = 1
+          go = 0 # 上に歩く
+          tar = 1 # walkする
           if values[2] == 2
-            go = 3 # R
-            tar = 1
+            go = 3 # 右に歩く
+            tar = 1　 # walkする
           end
         end
       end
     end
-    tar = 1
+    tar = 1　 # walkする
   end
 
-  if go == 2 # Down
+  if go == 2 # 下を向いていた時
     if values[8] == 2
       rand = random.rand(0..1)
       if rand == 0
-        go = 1 # L
-        tar = 1
+        go = 1 # 左に歩く
+        tar = 1 # walkする
         if values[4] == 2
-          go = 3 # R
-          tar = 1
+          go = 3 # 右に歩く
+          tar = 1 # walkする
           if values[6] == 2
-            go = 0 # U
-            tar = 1
+            go = 0 # 上に歩く
+            tar = 1 # walkする
           end
         end
       else
-        go = 3 # R
-        tar = 1
+        go = 3 # 右に歩く
+        tar = 1 # walkする
         if values[6] == 2
-          go = 1 # L
-          tar = 1
+          go = 1 # 左に歩く
+          tar = 1  # walkする
           if values[4] == 2
-            go = 0 # U
-            tar = 1
+            go = 0 # 上に歩く
+            tar = 1 # walkする
           end
         end
       end
     end
-    tar = 1
+    tar = 1 # walkする
   end
 
-  if go == 3 # Right
+  if go == 3 # 右を向いていた時
     if values[6] == 2
       rand = random.rand(0..1)
       if rand == 0
-        go = 0 # U
-        tar = 1
+        go = 0 # 上に歩く
+        tar = 1 # walkする
         if values[2] == 2
-          go = 2 # D
-          tar = 1
+          go = 2 # 下に歩く
+          tar = 1  # walkする
           if values[8] == 2
-            go = 1 # L
-            tar = 1
+            go = 1 # 左に歩く
+            tar = 1  # walkする
           end
         end
       else
-        go = 2 # D
-        tar = 1
+        go = 2 # 下に歩く
+        tar = 1 # walkする
         if values[8] == 2
-          go = 0 # U
-          tar = 1
+          go = 0 # 上に歩く
+          tar = 1 # walkする
           if values[2] == 2
-            go = 1 # L
-            tar = 1
+            go = 1 # 左に歩く
+            tar = 1 # walkする
           end
         end
       end
     end
-    tar = 1
+    tar = 1 # walkする
   end
 
-# item
+# アイテムを取りに行く
   if values[2] == 3
-    go = 0
-    tar = 1
+    go = 0 # 上に歩く
+    tar = 1 # walkする
   elsif values[4] == 3
-    go = 1
-    tar = 1
+    go = 1 #　左に歩く
+    tar = 1 # walkする
   elsif values[6] == 3
-    go = 3
-    tar = 1
+    go = 3 #右に歩く
+    tar = 1 # walkする
   elsif values[8] == 3
-    go = 2
-    tar = 1
+    go = 2 #下に歩く
+    tar = 1 # walkする
   end
 
 # cher
   if values[2] == 1
-    put = 0
-    tar = 0
+    put = 0 #上にputする
+    tar = 0 # putする
   elsif values[4] == 1
-    put = 1
-    tar = 0
+    put = 1 #左にputする
+    tar = 0 # putする
   elsif values[6] == 1
-    put = 2
-    tar = 0
+    put = 2 #下にputする
+    tar = 0 # putする
   elsif values[8] == 1
-    put = 3
-    tar = 0
+    put = 3 #右にputする
+    tar = 0 # putする
   end
 
 # target
