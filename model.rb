@@ -12,8 +12,8 @@ wallCountA = 0 # 壁A測定一回目
 itemCountA = 0 # アイテムA測定二回目
 wallCountB = 0 # 壁B測定一回目
 itemCountB = 0 # アイテムB測定二回目
-JudgA = 0 # 初期移動方向判定一回目
-JudgB = 0 # 初期移動方向判定二回目
+judgA = 0 # 初期移動方向判定一回目
+judgB = 0 # 初期移動方向判定二回目
 #ループ内変数
 tar = nil #　Walk,Put,Lookの分岐　0=put,1=walk,2=look
 put = nil # Put 0=Up,1=Left,2=Down,3=Right
@@ -28,9 +28,9 @@ if values[9] == 2
 	values = target.getReady
 	values = target.searchLeft
     if values[9] == 2
-		IntPosi = 0
+		intPosi = 0
 	else
-		IntPosi = 3
+		intPosi = 3
 	end
 else
 	values = target.getReady
@@ -39,15 +39,15 @@ else
 		values = target.getReady
 		values = target.searchRight
 		if values[9] == 2
-			IntPosi = 2
+			intPosi = 2
 		else
-			IntPosi = 1
+			intPosi = 1
 		end
 	end
 end
 
 # マップ左上にいた時の行動
-if IntPosi == 0
+if intPosi == 0
 	values = target.getReady
 	values = target.lookDown
 	for i in 1..9
@@ -67,16 +67,16 @@ if IntPosi == 0
           	itemCountB += 1
           end
     end
-    wallCountA - item_countA = JudgA
-    wallCountB - item_countB = JudgB
-    if JudgA < JudgB
+    wallCountA - item_countA = judgA
+    wallCountB - item_countB = judgB
+    if judgA < judgB
     	go = 3
     else
     	go = 2
     end
 
 # マップ左下にいた時の行動
-elsif IntPosi == 1
+elsif intPosi == 1
 	values = target.getReady
 	values = target.lookUp
 	for i in 1..9
@@ -96,16 +96,16 @@ elsif IntPosi == 1
           	itemCountB += 1
           end
     end
-    wallCountA - item_countA = JudgA
-    wallCountB - item_countB = JudgB
-    if JudgA < JudgB
+    wallCountA - item_countA = judgA
+    wallCountB - item_countB = judgB
+    if judgA < judgB
     	go = 3
     else
     	go = 0
     end
 
 # マップ右下にいた時の行動
-elsif IntPosi == 2
+elsif intPosi == 2
 	values = target.getReady
 	values = target.lookUp
 	for i in 1..9
@@ -125,16 +125,16 @@ elsif IntPosi == 2
           	itemCountB += 1
           end
     end
-    wallCountA - item_countA = JudgA
-    wallCountB - item_countB = JudgB
-    if JudgA < JudgB
+    wallCountA - item_countA = judgA
+    wallCountB - item_countB = judgB
+    if judgA < judgB
     	go = 1
     else
     	go = 0
     end
 
 # マップ右上にいた時の行動
-elsif IntPosi == 3
+elsif intPosi == 3
 	values = target.getReady
 	values = target.lookDown
 	for i in 1..9
@@ -154,9 +154,9 @@ elsif IntPosi == 3
           	itemCountB += 1
           end
     end
-    wallCountA - item_countA = JudgA
-    wallCountB - item_countB = JudgB
-    if JudgA < JudgB
+    wallCountA - item_countA = judgA
+    wallCountB - item_countB = judgB
+    if judgA < judgB
     	go = 1
     else
     	go = 2
