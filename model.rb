@@ -205,7 +205,7 @@ loop do # ここからループ
         tar = 1 #walkする
         if values[6] == 2
           go = 0 # 上に歩く
-          tar = 1　# walkする
+          tar = 1 # walkする
         end
       end
     elsif values[7] == 3
@@ -399,12 +399,12 @@ loop do # ここからループ
           tar = 1 # walkする
           if values[2] == 2
             go = 3 # 右に歩く
-            tar = 1　 # walkする
+            tar = 1 # walkする
           end
         end
       end
     end
-    tar = 1　 # walkする
+    tar = 1 # walkする
   end
 
   if go == 2 # 下を向いていた時
