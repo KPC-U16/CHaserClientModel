@@ -2,7 +2,7 @@
 require 'CHaserConnect.rb'
 target = CHaserConnect.new("「  」")
 
-InitPosi = nil #初期値判定 0=左上 1=左下 2=右下 3=右上
+initPosi = nil #初期値判定 0=左上 1=左下 2=右下 3=右上
 i = 0 # for文
 wallCountA = 0 # 壁A測定一回目
 itemCountA = 0 # アイテムA測定二回目
