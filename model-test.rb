@@ -7,14 +7,10 @@ values = Array.new(10)              # [0]にシステムの割り込み変数が
 random = Random.new                 # 乱数生成
 
 # ループ前変数
-$initPosi = nil # 初期値判定 0=左上 1=左下 2=右下 3=右上
-i = 0 # for文
-wallCountA = 0 # 壁A測定一回目
-itemCountA = 0 # アイテムA測定二回目
-wallCountB = 0 # 壁B測定一回目
-itemCountB = 0 # アイテムB測定二回目
-judgA = 0 # 初期移動方向判定一回目
-judgB = 0 # 初期移動方向判定二回目
+# 各メソッドで使用する変数(テスト中に追加されたやつ)
+$initPosi = nil   # 初期位置を把握する(0=左上, 1=左下, 2=左右下, 3=右上)
+$direction = nil  # キャラクタの進行方向を決める（向きは時計の数字に合わせる
+
 
 #ループ内変数
 $tar = nil #　Walk,$put,Lookの分岐　0=$put,1=walk,2=$look
@@ -22,10 +18,6 @@ $put = nil # $put 0=Up,1=Left,2=Down,3=Right
 $look = nil # $look 0=Up,1=Left,2=Down,3=Right
 $go = nil # 移動先 0=Up,1=Left,2=Down,3=Right
 $tarn = 4 # ターンカウント(初期移動の分の4)
-
-# 各メソッドで使用する変数(テスト中に追加されたやつ)
-$initPosi = nil   # 初期位置を把握する(0=左上, 1=左下, 2=左右下, 3=右上)
-$direction = nil  # キャラクタの進行方向を決める（向きは時計の数字に合わせる
 
 #ここからメソッド定義
 def _initialPositionGrasp values, target  # 初期位置把握
