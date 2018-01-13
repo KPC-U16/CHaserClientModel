@@ -2,9 +2,9 @@
 require 'CHaserConnect.rb' #呼び出すおまじない
 
 #　書き換えない
-target = CHaserConnect.new("model") # ()の中好きな名前
-values = Array.new(10)
-random = Random.new # 乱数生成
+target = CHaserConnect.new("model") # ()の中好きな名前(最大全角四文字)
+values = Array.new(10)              # [0]にシステムの割り込み変数が入る [1]~[9]
+random = Random.new                 # 乱数生成
 
 # ループ前変数
 $initPosi = nil # 初期値判定 0=左上 1=左下 2=右下 3=右上
@@ -23,35 +23,45 @@ $look = nil # $look 0=Up,1=Left,2=Down,3=Right
 $go = nil # 移動先 0=Up,1=Left,2=Down,3=Right
 $tarn = 4 # ターンカウント(初期移動の分の4)
 
-#ここからメソッド定義
+# 各メソッドで使用する変数(テスト中に追加されたやつ)
+$initPosi = nil   # 初期位置を把握する(0=左上, 1=左下, 2=左右下, 3=右上)
+$direction = nil  # キャラクタの進行方向を決める（向きは時計の数字に合わせる
 
-def _initialPositionGrasp(values, target) # 初期位置把握
+#ここからメソッド定義
+def _initialPositionGrasp values, target  # 初期位置把握
+  upvalue = nil
+  leftvalue = nil
+
+  # 1ターン目
   values = target.getReady
-  values = target.searchUp
-  if values[9] == 2
-	  values = target.getReady
-	  values = target.searchLeft
-    if values[9] == 2
-	 	  $initPosi = 0
-	  else
-	 	  $initPosi = 3
-    end
+  upvalue = target.searchUp
+
+  # 2ターン目
+  values = target.getReady
+  leftvalue = target.searchLeft
+
+  if upvalue[9] == 2 && leftvalue[9] == 2 then
+    # 上と左に壁があった時
+    $initPosi = 0 # 自分は左上にいる
+  elsif upvalue[9] != 2 && leftvalue[9] == 2 then
+    # 上に壁はないけど左に壁があった時
+    $initPosi = 1 # 自分は左下にいる
+  elsif upvalue[9] != 2 && leftvalue[9] != 2 then
+    # 上と左に壁がなかった時
+    $initPosi = 2 # 自分は右下にいる
+  elsif upvalue[9] == 2 && leftvalue[9] != 2 then
+    # 上に壁はあるけど左に壁がなかった時
+    $initPosi = 3 # 自分は右上にいる
   else
-	  values = target.getReady
-	  values = target.searchDown
-	  if values[9] == 2
-	  	values = target.getReady
-	  	values = target.searchRight
-	  	if values[9] == 2
-	  		$initPosi = 2
-	  	else
-	  		$initPosi = 1
-	  	end
-	  end
+    # なんかよくわかんない時
+    $initPosi = random.rand(0..3) # 何処かにいるんじゃない？(本当はエラー対処すべき)
   end
-  print "initposi"
+
+  print "initPosi = "
   puts $initPosi
 end
+
+
 
 def _initialAction(values, target, i,wallCountA, wallCountB, itemCountA ,itemCountB, judgA, judgB) # 初期行動
   if $initPosi == 0 # マップ左上にいた時の行動
