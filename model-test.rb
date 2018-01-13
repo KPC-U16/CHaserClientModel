@@ -20,6 +20,14 @@ $go = nil # 移動先 0=Up,1=Left,2=Down,3=Right
 $tarn = 4 # ターンカウント(初期移動の分の4)
 
 #ここからメソッド定義
+
+def _unJudgementDirection
+  return random.rand(0..3)*3
+end
+
+
+
+
 def _initialPositionGrasp values, target  # 初期位置把握
   upvalue = nil
   leftvalue = nil
@@ -53,7 +61,8 @@ def _initialPositionGrasp values, target  # 初期位置把握
   puts $initPosi
 end
 
-def _initialAction values, target
+    
+ def _initialAction values, target
   valuesUD = nil
   valuesLR = nil
   wallCountUD = nil
@@ -119,87 +128,119 @@ def _initialAction values, target
     end
   else
     # なんかよくわかんない時
-    $direction = random.rand(0..3) * 3 # 何処かに向かうんじゃない？(本当はエラーry)
+    $direction = _unJudgementDirection # 何処かに向かうんじゃない？(本当はエラーry)
   end
-  
+
   print "direction = "
   puts $direction
 end
 
 
+def _obliqueItemGet values  # 斜めのアイテムに隣接しに行く
 
-
-def _obliqueItemGet(values,  random) #斜めのアイテムを取りに行く
- if values[1] == 3
-    rand = random.rand(0..1)
-    if rand == 0
-      $go = 0 # 上に歩く
-      $tar = 1 # walkする
-      if values[2] == 2
-        $go = 1 # 左に歩く
-        $tar = 1 # walkする
+  if values[1] == 3 # 左上にアイテムがある時
+    if values[2] == 0 && values[4] == 0 then    # 上も左も進める時
+      rand = random.rand(0..1)
+      if rand == 0
+        $direction = 0  # 0時方向に進む
+      else
+        $direction = 9  # 9時方向に進む
       end
-    else
-      $go = 1 # 左に歩く
-      $tar = 1 #walkする
-      if values[4] == 2
-        $go = 0 # 上に歩く
-        $tar = 1 # walkする
-      end
-    end
-  elsif values[3] == 3
-    rand = random.rand(0..1)
-    if rand == 0
-      $go = 0 # 上に歩く
-      $tar = 1 # walkする
-      if values[2] == 2
-        $go = 3 # 右に歩く
-        $tar = 1 # walkする
-      end
-    else
-      $go = 3 # 右に歩く
-      $tar = 1 #walkする
-      if values[6] == 2
-        $go = 0 # 上に歩く
-        $tar = 1 # walkする
-      end
-    end
-    elsif values[7] == 3
-    rand = random.rand(0..1)
-    if rand == 0
-      $go = 1 # 左に歩く
-      $tar = 1 # walkする
-      if values[4] == 2
-        $go = 2 # 下に歩く
-        $tar = 1 # walkする
-      end
-    else
-      $go = 2 # 下に歩く
-      $tar = 1 # walkする
-      if values[8] == 2
-        $go = 1 # 左に歩く
-        $tar = 1 # walkする
-      end
-    end
-  elsif values[9] == 3
-    rand = random.rand(0..1)
-    if rand == 0
-      $go = 2 # 下に歩く
-      $tar = 1 # walkする
-      if values[8] == 2
-        $go = 3 # 右に歩く
-        $tar = 1 # walkする
-      end
-    else
-      $go = 3 # 右に歩く
-      $tar = 1  # walkする
-      if values[6] == 2
-        $go = 2 # 下に歩く
-        $tar = 1  # walkする
+    elsif values[2] != 0 && values[4] == 0 then # 左にしか進めない時
+      $direction = 9    # 9時方向に進む
+    elsif values[2] == 0 && values[4] != 0 then # 上にしか進めない時
+      $direction = 0    # 0時方向に進む
+    elsif values[2] != 0 && values[4] != 0 then # 左も上も進めない時
+      # 来てない方向へ進む
+      if $direction = 0     # 上を目指していたので
+        $direction = 3      # 右に進む
+      elsif $direction = 9  # 左を目指していたので
+        $direction = 6      # 下に進む
+      else
+        #なんかよくわかんない時
+        $direction = _unJudgementDirection # 何処かに向かうんじゃない？(本当はエラーry)
       end
     end
   end
-end
+
+  if values[3] == 3 # 右上にアイテムがある時
+    if values[2] == 0 && values[6] == 0 then    # 上も右も進める時
+      rand = random.rand(0..1)
+      if rand == 0
+        $direction = 0  # 0時方向に進む
+      else
+        $direction = 3  # 3時方向に進む
+      end
+    elsif values[2] != 0 && values[6] == 0 then # 右にしか進めない時
+      $direction = 3    # 3時方向に進む
+    elsif values[2] == 0 && values[6] != 0 then # 上にしか進めない時
+      $direction = 0    # 0時方向に進む
+    elsif values[2] != 0 && values[6] != 0 then # 右も上も進めない時
+      # 来てない方向へ進む
+      if $direction = 0     # 上を目指していたので
+        $direction = 9      # 左へ進む
+      elsif $direction = 3  # 右を目指していたので
+        $direction = 6      # 下へ進む
+      else
+        #なんかよくわかんない時
+        $direction = _unJudgementDirection # 何処かに向かうんじゃない？(本当はエラーry)
+      end
+    end
+  end
+
+  if values[7] == 3 # 左下にアイテムがある時
+    if values[4] == 0 && values[8] == 0 then    # 左も下も進める時
+      rand = random.rand(0..1)
+      if rand == 0
+        $direction = 6  # 6時方向に進む
+      else
+        $direction = 9  # 9時方向に進む
+      end
+    elsif values[4] != 0 && values[8] == 0 then # 下にしか進めない時
+      $direction = 6    # 6時方向に進む
+    elsif values[4] == 0 && values[8] != 0 then # 左にしか進めない時
+      $direction = 9    # 9時方向に進む
+    elsif values[4] != 0 && values[8] != 0 then # 右も上も進めない時
+      # 来てない方向へ進む
+      if $direction = 6     # 下を目指していたので
+        $direction = 3      # 右へ進む
+      elsif $direction = 9  # 左を目指していたので
+        $direction = 0      # 上へ進む
+      else
+        #なんかよくわかんない時
+        $direction = _unJudgementDirection # 何処かに向かうんじゃない？(本当はエラーry)
+      end
+    end
+  end
+
+  if values[9] == 3 # 右下にアイテムがある時
+    if values[6] == 0 && values[8] == 0 then    # 右も下も進める時
+      rand = random.rand(0..1)
+      if rand == 0
+        $direction = 6  # 6時方向に進む
+      else
+        $direction = 3  # 3時方向に進む
+      end
+    elsif values[6] != 0 && values[8] == 0 then # 下にしか進めない時
+      $direction = 6    # 6時方向に進む
+    elsif values[6] == 0 && values[8] != 0 then # 右にしか進めない時
+      $direction = 3    # 9時方向に進む
+    elsif values[6] != 0 && values[8] != 0 then # 右も下も進めない時
+      # 来てない方向へ進む
+      if $direction = 3     # 右を目指していたので
+        $direction = 0      # 上へ進む
+      elsif $direction = 6  # 下を目指していたので
+        $direction = 9      # 左へ進む
+      else
+        #なんかよくわかんない時
+        $direction = _unJudgementDirection # 何処かに向かうんじゃない？(本当はエラーry)
+      end
+    end
+  end
+
+  $actflg = 0     # walkフラグを立てる
+end   
+    
 
 def _itemGet(values) # 隣接するアイテムを取りに行く
   if values[2] == 3
