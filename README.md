@@ -4,6 +4,7 @@
 
 ## ディレクトリ構成
 * model.rb モデル本体
+* model-test.rb β版
 * IntPosi 初期行動
 
 ## 目指す機能(実装済みは<)
