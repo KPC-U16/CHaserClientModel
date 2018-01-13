@@ -61,115 +61,81 @@ def _initialPositionGrasp values, target  # 初期位置把握
   puts $initPosi
 end
 
+def _initialAction values, target
+  valuesUD = nil
+  valuesLR = nil
+  wallCountUD = nil
+  wallCountLR = nil
+  itemCountUD = nil
+  itemCountLR = nil
+  scoreUD = nil
+  scoreLR = nil
 
-
-def _initialAction(values, target, i,wallCountA, wallCountB, itemCountA ,itemCountB, judgA, judgB) # 初期行動
-  if $initPosi == 0 # マップ左上にいた時の行動
-	  values = target.getReady
-	  values = target.lookDown
-	  for i in 1..9
-      if values[i] == 2
-      	wallCountA += 1
-      elsif values[i] == 3
-      	itemCountA += 1
-      end
-    end
-    values = target.getReady
-    values = target.lookRight
-	  for i in 1..9
-      if values[i] == 2
-      	wallCountB += 1
-      elsif values[i] == 3
-      	itemCountB += 1
-      end
-    end
-    wallCountA - item_countA = judgA
-    wallCountB - item_countB = judgB
-    if judgA < judgB
-    	$go = 3
-    else
-    	$go = 2
-    end
-  elsif  $initPosi == 1 # マップ左下にいた時の行動
-	  values = target.getReady
-	  values = target.lookUp
-	  for i in 1..9
-      if values[i] == 2
-      	wallCountA += 1
-      elsif values[i] == 3
-      	itemCountA += 1
-      end
-    end
-    values = target.getReady
-	  values = target.lookRight
-	  for i in 1..9
-      if values[i] == 2
-      	wallCountB += 1
-      elsif values[i] == 3
-      	itemCountB += 1
-      end
-    end
-    wallCountA - item_countA = judgA
-    wallCountB - item_countB = judgB
-    if judgA < judgB
-    	$go = 3
-    else
-    	$go = 0
-    end
-  elsif $initPosi == 2 # マップ右下にいた時の行動
-	  values = target.getReady
-	  values = target.lookUp
-	  for i in 1..9
-      if values[i] == 2
-      	wallCountA += 1
-      elsif values[i] == 3
-      	itemCountA += 1
-      end
-    end
-    values = target.getReady
-	  values = target.lookLeft
-	  for i in 1..9
-      if values[i] == 2
-      	wallCountB += 1
-      elsif values[i] == 3
-      	itemCountB += 1
-      end
-    end
-    wallCountA - item_countA = judgA
-    wallCountB - item_countB = judgB
-    if judgA < judgB
-    	$go = 1
-    else
-    	$go = 0
-    end
-  elsif  $initPosi == 3 # マップ右上にいた時の行動
-	  values = target.getReady
-	  values = target.lookDown
-	  for i in 1..9
-      if values[i] == 2
-      	wallCountA += 1
-      elsif values[i] == 3
-      	itemCountA += 1
-      end
-    end
-    values = target.getReady
-	  values = target.lookLeft
-	  for i in 1..9
-      if values[i] == 2
-      	wallCountB += 1
-      elsif values[i] == 3
-      	itemCountB += 1
-      end
-    end
-    wallCountA - item_countA = judgA
-    wallCountB - item_countB = judgB
-    if judgA < judgB
-    	$go = 1
-    else
-    	$go = 2
+  # 3ターン目
+  values = target.getReady
+  if $initPosi == 0 || $initPosi == 3 then
+    # マップの上側にいる時
+    valuesUD = target.lookDown
+  elsif $initPosi == 1 || $initPosi == 2 then
+    # マップの下側にいる時
+    valuesUD = target.lookUp
+  end
+  for i in 1..9 do
+    if valuesUD[i] == 2
+      wallCountUD += 1
+    elsif valuesUD[i] == 3
+      itemCountUD += 1
     end
   end
+
+  # 4ターン目
+  values = target.getReady
+  if $initPosi == 0 || $initPosi == 1 then
+    # マップの左側にいる時
+    valuesLR = target.lookRight
+  elsif $initPosi == 2 || $initPosi == 3 then
+    # マップの右側にいる時
+    valuesLR = target.lookLeft
+  end
+  for i in 1..9 do
+    if valuesLR[i] == 2
+      wallCountLR += 1
+    elsif valuesLR[i] == 3
+      itemCountLR += 1
+    end
+  end
+
+  wallCountUD - itemCountUD = scoreUD
+  wallCountLR - itemCountLR = scoreLR
+  if scoreUD <= scoreLR
+    # 上下のスコアが左右のスコア以下の時(上下方向に進む)
+    if $initPosi == 0 || $initPosi == 3
+      # マップの上側にいる時
+      $direction = 6 # 6時の方向
+    elsif $initPosi == 1 || $initPosi == 2
+      # マップの下側にいる時
+      $direction = 0 # 0時の方向
+    end
+  elsif scoreUD > scoreLR
+    # 上下のスコアが左右のスコアより大きい時(左右方向に進む)
+    if $initPosi == 0 || $initPosi == 1
+      # マップの左側にいる時
+      $direction = 3 # 3時の方向
+    elsif $initPosi == 2 || $initPosi == 3
+      # マップの右側にいる時
+      $direction = 9 # 9時の方向
+    end
+  else
+    # なんかよくわかんない時
+    $direction = random.rand(0..3) * 3 # 何処かに向かうんじゃない？(本当はエラーry)
+  end
+  
+  print "direction = "
+  puts $direction
 end
+
+
+
 
 def _obliqueItemGet(values,  random) #斜めのアイテムを取りに行く
  if values[1] == 3
