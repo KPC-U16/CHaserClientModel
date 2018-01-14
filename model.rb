@@ -557,7 +557,7 @@ loop do # ここからループ
   values = target.getReady
 
   if values[0] == 0
-    brea
+    break
   end
 #-----ここまで書き換えない-----
 
