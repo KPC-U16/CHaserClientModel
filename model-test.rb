@@ -241,22 +241,22 @@ def _obliqueItemGet values  # 斜めのアイテムに隣接しに行く
   $actflg = 0     # walkフラグを立てる
 end   
     
-
-def _itemGet(values) # 隣接するアイテムを取りに行く
-  if values[2] == 3
-    $go = 0 # 上に歩く
-    $tar = 1 # walkする
-  elsif values[4] == 3
-    $go = 1 #　左に歩く
-    $tar = 1 # walkする
-  elsif values[6] == 3
-    $go = 3 #右に歩く
-    $tar = 1 # walkする
-  elsif values[8] == 3
-    $go = 2 #下に歩く
-    $tar = 1 # walkする
+def _itemGet values # 隣接するアイテムを取りに行く(要再構築)
+  preactflg = $actflg
+  $actflg = 0
+  if values[2] == 3 then
+    $direction = 0
+  elsif values[4] == 3 then
+    $direction = 9
+  elsif values[6] == 3 then
+    $direction = 3
+  elsif values[8] == 3 then
+    $direction = 6
+  else
+    $actflg = preactflg # フラグを戻しておく
   end
 end
+
 
 def _obliqueEnemy(values, random) #斜めに敵がいた時の行動
   if values[1] == 1
@@ -362,19 +362,19 @@ def _obliqueEnemy(values, random) #斜めに敵がいた時の行動
   end
 end
 
-def _enemy(values) # 隣接した敵に攻撃する
+def _enemy values  # 隣接した敵を壁で埋める
+  preactflg = $actflg
+  $actflg = 2 # フラグをputにする
   if values[2] == 1
-    $put = 0 #上にputする
-    $tar = 0 # putする
+    $direction = 0
   elsif values[4] == 1
-    $put = 1 #左にputする
-    $tar = 0 # putする
+    $direction = 9
   elsif values[6] == 1
-    $put = 3 #右にputする
-    $tar = 0 # putする
+    $direction = 3
   elsif values[8] == 1
-    $put = 2 #下にputする
-    $tar = 0 # putする
+    $direction = 6
+  else
+    $actflg = preactflg # フラグを戻しておく
   end
 end
 
@@ -500,74 +500,56 @@ def _avoidBlock(values, random) # 壁にめり込まない
   end
 end
 
-def _act(values, target) # 行動する
-  puts $tar
-  puts $put
-  puts $look
-  puts $go
-  case $tar
+def _action values
+  case $actflg
+  when 0 # walk
+    case $direction
     when 0
-      case $put
-        when 0
-          values = target.putUp
-          $tarn += 1
-          puts "1"
-        when 1
-          values = target.putLeft
-          $tarn += 1
-          puts "2"
-        when 2
-          values =  target.putDown
-          $tarn += 1
-          puts "3"
-        when 3
-          values =  target.putRight
-          $tarn += 1
-          puts "4"
-      end
-    when 1
-      case $go
-        when 0
-          values = target.walkUp
-          $tarn += 1
-          puts "5"
-        when 1
-          values = target.walkLeft
-          $tarn += 1
-          puts "6"
-        when 2
-          values =  target.walkDown
-          $tarn += 1
-          puts "7"
-        when 3
-          values =  target.walkRight
-          $tarn += 1
-          puts "8"
-      end
-    when 2
-      case $look
-      when 0
-        values = target.lookUp
-        $tarn += 1
-        puts "9"
-      when 1
-        values = target.lookLeft
-        $tarn += 1
-        puts "1-0"
-      when 2
-        values =  target.lookDown
-        $tarn += 1
-        puts "1-1"
-      when 3
-        values =  target.lookRight
-        $tarn += 1
-        puts "1-2"
-      end
-      puts "1-3"
+      values = target.walkUp
+    when 3
+      values = target.walkRight
+    when 6
+      values = target.walkDown
+    when 9
+      values = target.walkLeft
+    end
+  when 1 # look
+    case $direction
+    when 0
+      values = target.lookUp
+    when 3
+      values = target.lookRight
+    when 6
+      values = target.lookDown
+    when 9
+      values = target.lookLeft
+    end
+  when 2 # put
+    case $direction
+    when 0
+      values = target.putUp
+    when 3
+      values = target.putRight
+    when 6
+      values = target.putDown
+    when 9
+      values = target.putLeft
+    end
+  when 3 # search
+    case $direction
+    when 0
+      values = target.searchUp
+    when 3
+      values = target.searchRight
+    when 6
+      values = target.searchDown
+    when 9
+      values = target.searchLeft
+    end
   end
-  puts "1-4"
 end
 
+    
 # ここから実行するメソッドを書いていく
 
 _initialPositionGrasp(values, target) # 初期位置把握
