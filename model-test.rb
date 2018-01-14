@@ -137,7 +137,9 @@ end
 
 
 def _obliqueItemGet values  # 斜めのアイテムに隣接しに行く
-
+  preactflg = $actflg
+  $actflg = 0 # walkフラグを立てる
+  
   if values[1] == 3 # 左上にアイテムがある時
     if values[2] == 0 && values[4] == 0 then    # 上も左も進める時
       rand = random.rand(0..1)
@@ -236,9 +238,8 @@ def _obliqueItemGet values  # 斜めのアイテムに隣接しに行く
         $direction = _unJudgementDirection # 何処かに向かうんじゃない？(本当はエラーry)
       end
     end
+  else
   end
-
-  $actflg = 0     # walkフラグを立てる
 end   
     
 def _itemGet values # 隣接するアイテムを取りに行く(要再構築)
