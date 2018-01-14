@@ -63,14 +63,14 @@ end
 
     
  def _initialAction values, target
-  valuesUD = nil
-  valuesLR = nil
-  wallCountUD = nil
-  wallCountLR = nil
-  itemCountUD = nil
-  itemCountLR = nil
-  scoreUD = nil
-  scoreLR = nil
+  valuesUD = 0
+  valuesLR = 0
+  wallCountUD = 0
+  wallCountLR = 0
+  itemCountUD = 0
+  itemCountLR = 0
+  scoreUD = 0
+  scoreLR = 0
 
   # 3ターン目
   values = target.getReady
@@ -152,9 +152,9 @@ def _obliqueItemGet values  # 斜めのアイテムに隣接しに行く
       $direction = 0    # 0時方向に進む
     elsif values[2] != 0 && values[4] != 0 then # 左も上も進めない時
       # 来てない方向へ進む
-      if $direction = 0     # 上を目指していたので
+      if $direction ==0     # 上を目指していたので
         $direction = 3      # 右に進む
-      elsif $direction = 9  # 左を目指していたので
+      elsif $direction ==9  # 左を目指していたので
         $direction = 6      # 下に進む
       else
         #なんかよくわかんない時
@@ -177,9 +177,9 @@ def _obliqueItemGet values  # 斜めのアイテムに隣接しに行く
       $direction = 0    # 0時方向に進む
     elsif values[2] != 0 && values[6] != 0 then # 右も上も進めない時
       # 来てない方向へ進む
-      if $direction = 0     # 上を目指していたので
+      if $direction ==0     # 上を目指していたので
         $direction = 9      # 左へ進む
-      elsif $direction = 3  # 右を目指していたので
+      elsif $direction ==3  # 右を目指していたので
         $direction = 6      # 下へ進む
       else
         #なんかよくわかんない時
@@ -202,9 +202,9 @@ def _obliqueItemGet values  # 斜めのアイテムに隣接しに行く
       $direction = 9    # 9時方向に進む
     elsif values[4] != 0 && values[8] != 0 then # 右も上も進めない時
       # 来てない方向へ進む
-      if $direction = 6     # 下を目指していたので
+      if $direction ==6     # 下を目指していたので
         $direction = 3      # 右へ進む
-      elsif $direction = 9  # 左を目指していたので
+      elsif $direction ==9  # 左を目指していたので
         $direction = 0      # 上へ進む
       else
         #なんかよくわかんない時
@@ -227,9 +227,9 @@ def _obliqueItemGet values  # 斜めのアイテムに隣接しに行く
       $direction = 3    # 9時方向に進む
     elsif values[6] != 0 && values[8] != 0 then # 右も下も進めない時
       # 来てない方向へ進む
-      if $direction = 3     # 右を目指していたので
+      if $direction ==3     # 右を目指していたので
         $direction = 0      # 上へ進む
-      elsif $direction = 6  # 下を目指していたので
+      elsif $direction ==6  # 下を目指していたので
         $direction = 9      # 左へ進む
       else
         #なんかよくわかんない時
@@ -572,7 +572,7 @@ end
 
 _initialPositionGrasp(values, target) # 初期位置把握
 
-_initialAction(values, target, i, wallCountA, wallCountB, itemCountA ,itemCountB, judgA, judgB) # 初期行動
+_initialAction(values, target) # 初期行動
 
 loop do # ここからループ
 
@@ -584,7 +584,7 @@ loop do # ここからループ
   end
 #-----ここまで書き換えない-----
 
-_obliqueItemGet(values, random) #斜めのアイテムを取りに行く
+_obliqueItemGet(values) #斜めのアイテムを取りに行く
 print "bb"
 _obliqueEnemy(values, random) #斜めに敵がいたときの行動
 print"avb"
