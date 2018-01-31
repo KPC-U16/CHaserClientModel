@@ -23,8 +23,8 @@
   
 ## model.rbへ統合するときの変更点
 - IntPosi.rb
- - 'values = target.'を 'go ='に変更
+  - 'values = target.'を 'go ='に変更
 
 - ruby-test
- - 行動の指針を決めるフラグ '$actflg'を追加
- - その他ruby-testで新たに追加された要素などの要確認(History参照)
+  - 行動の指針を決めるフラグ '$actflg'を追加
+  - その他ruby-testで新たに追加された要素などの要確認(History参照)
