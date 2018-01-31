@@ -26,6 +26,9 @@ def _unJudgementDirection
 end
 
 
+def _PrepareAutomatically values
+  values = target.getReady
+end
 
 
 def _initialPositionGrasp values, target  # 初期位置把握
@@ -33,11 +36,11 @@ def _initialPositionGrasp values, target  # 初期位置把握
   leftvalue = nil
 
   # 1ターン目
-  values = target.getReady
+  _PrepareAutomatically(values)
   upvalue = target.searchUp
 
   # 2ターン目
-  values = target.getReady
+  _PrepareAutomatically(values)
   leftvalue = target.searchLeft
 
   if upvalue[9] == 2 && leftvalue[9] == 2 then
@@ -61,7 +64,7 @@ def _initialPositionGrasp values, target  # 初期位置把握
   puts $initPosi
 end
 
-    
+
  def _initialAction values, target
   valuesUD = 0
   valuesLR = 0
@@ -73,7 +76,7 @@ end
   scoreLR = 0
 
   # 3ターン目
-  values = target.getReady
+  _PrepareAutomatically(values)
   if $initPosi == 0 || $initPosi == 3 then
     # マップの上側にいる時
     valuesUD = target.lookDown
@@ -90,7 +93,7 @@ end
   end
 
   # 4ターン目
-  values = target.getReady
+  _PrepareAutomatically(values)
   if $initPosi == 0 || $initPosi == 1 then
     # マップの左側にいる時
     valuesLR = target.lookRight
@@ -139,7 +142,7 @@ end
 def _obliqueItemGet values  # 斜めのアイテムに隣接しに行く
   preactflg = $actflg
   $actflg = 0 # walkフラグを立てる
-  
+
   if values[1] == 3 # 左上にアイテムがある時
     if values[2] == 0 && values[4] == 0 then    # 上も左も進める時
       rand = random.rand(0..1)
@@ -240,8 +243,8 @@ def _obliqueItemGet values  # 斜めのアイテムに隣接しに行く
     end
   else
   end
-end   
-    
+end
+
 def _itemGet values # 隣接するアイテムを取りに行く(要再構築)
   preactflg = $actflg
   $actflg = 0
@@ -550,7 +553,7 @@ def _action values
   end
 end
 
-    
+
 # ここから実行するメソッドを書いていく
 
 _initialPositionGrasp(values, target) # 初期位置把握
@@ -560,25 +563,25 @@ _initialAction(values, target) # 初期行動
 loop do # ここからループ
 
 #---------ここから---------
-  values = target.getReady
-  print "aaa"
+  _PrepareAutomatically(values)
+
   if values[0] == 0
     break
   end
 #-----ここまで書き換えない-----
 
 _obliqueItemGet(values) #斜めのアイテムを取りに行く
-print "bb"
+
 _obliqueEnemy(values, random) #斜めに敵がいたときの行動
-print"avb"
+
 _avoidBlock(values, random) # 壁にめり込まない
-print "ig"
+
 _itemGet(values) # 隣接するアイテムを取りに行く
-print "ene"
+
 _enemy(values) # 隣接する敵に攻撃を仕掛ける
-print "act"
+
 _act(values, target) #行動する
-print "fin"
+
 #---------ここから---------
   if values[0] == 0
     break
