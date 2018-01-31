@@ -5,7 +5,8 @@
 ## ディレクトリ構成
 * model.rb モデル本体
 * model-test.rb β版
-* IntPosi 初期行動
+* IntPosi.rb 初期行動
+* Pni.rb 袋小路脱出(not 回避)
 
 ## 目指す機能(実装済みは<, リファクタリング済みは-, 本体に反映済みは+)
 * 初期位置を把握し最良の行動 <-+
@@ -22,8 +23,8 @@
   
 ## model.rbへ統合するときの変更点
 - IntPosi.rb
-  - 'values = target.'を 'go ='に変更
+ - 'values = target.'を 'go ='に変更
 
 - ruby-test
-  - 行動の指針を決めるフラグ '$actflg'を追加
-  - その他ruby-testで新たに追加された要素などの要確認(History参照)
+ - 行動の指針を決めるフラグ '$actflg'を追加
+ - その他ruby-testで新たに追加された要素などの要確認(History参照)
