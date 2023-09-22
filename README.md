@@ -1,4 +1,4 @@
-# ChaserClientModel
+# CHaserClientModel
 講習会用のテンプレートソースコード
 要リファクタリング
 
